@@ -1,5 +1,5 @@
 import json
-from src.ca2_video import well_signals
+from src.multi_well_video import well_signals
 
 
 if __name__ == '__main__':
