@@ -10,20 +10,25 @@ from src.video_api import VideoReader
 
 
 """
-    Extracts nautilus MxN well Ca2+ signals.
-    Stores the signal data as a time series for each well in a separate xlsx file, saves an 
-    image with all the roi's drawn on one frame & saves an image with signal plots for each well.
+    Extracts signals from multi-well microscope data and stores each wells signal data as a separate xlsx file.
+    Creates an image with all the roi's drawn on one frame & creates an image with signal plots for each well.
 """
 
 
-# TODO: refactor so we don't have just a single file with everything in it
-
-# TODO: fix video_api lib so initialisation and seeking work properly
-
-
 def well_signals(setup_config: Dict):
-    """ Extracts a time series for defined roi's within each frame of a video
-        and writes the results to an xlsx file for each roi """
+    """
+        Extracts time series data for defined roi's within each frame of a video and
+        writes the results to xlsx files for each roi and zips them into a single archive.
+        Also creates an image with all the roi's drawn on one frame as a quick sanity check,
+        and creates another image with time series plots of the signal data for each well.
+    """
+
+    # add the roi_coordinates to the well information
+    setup_config = add_roi_coordinates_to_well_info(setup_config)
+
+    # safely create the output dir if it does not exist
+    print("\nCreating Output Dir")
+    make_output_dir(setup_config['output_dir_path'])
 
     # open the input stream
     print("\nOpening Video")
@@ -31,23 +36,18 @@ def well_signals(setup_config: Dict):
     if not input_video_stream.isOpened():
         raise RuntimeError("Can't open video stream. No Ca2+ signals have been extracted.")
 
-    # safely create the output dir if it does not exist
-    print("\nCreating Output Dir")
-    make_output_dir(setup_config['output_dir_path'])
+    # save an image with the roi's drawn on it as quick sanity check.
+    print("\nCreating ROI Sanity Check Image...")
+    input_video_stream.setFramePosition(0)
+    frame_to_draw_rois_on = input_video_stream.frameRGB()
+    path_to_save_frame_image = join_paths(setup_config['output_dir_path'], 'roi_locations.png')
+    frame_with_rois_drawn(frame_to_draw_rois_on, setup_config['wells'], path_to_save_frame_image)
+    print("ROI Sanity Check Image Created")
 
     # create a numpy array to store the time series of well signal values
     num_wells = num_active_wells(setup_config['wells'])
     num_frames = input_video_stream.numFrames()
     signal_values = np.empty((num_wells, num_frames), dtype=np.float32)
-
-    # store the first frame so we can draw the roi's on it and save as image for a quality check
-    input_video_stream.setFramePosition(0)
-    # TODO: fix the vido lib so it initialises properly, seeks properly and
-    #       we can re-set the position once we've reached the end of the frames
-    frame_to_draw_rois_on = input_video_stream.frameRGB()
-
-    # add the roi_coordinates to the well information
-    setup_config = config_with_well_roi_coordinates(setup_config)
 
     # extract ca2+ signal in each well for each frame
     print("\nStarting Signal Extraction...")
@@ -60,14 +60,14 @@ def well_signals(setup_config: Dict):
                 x_end = int(well_info['roi_coordinates']['lower_right']['x_pos'])
                 y_start = int(well_info['roi_coordinates']['upper_left']['y_pos'])
                 y_end = int(well_info['roi_coordinates']['lower_right']['y_pos'])
-                frame_roi = input_video_stream.frameGray()[y_start:y_end,x_start:x_end]
+                frame_roi = input_video_stream.frameGray()[y_start:y_end, x_start:x_end]
                 row_num = well_info['serial_position']
                 frame_num = input_video_stream.framePosition()
                 signal_values[row_num, frame_num] = roi_signal(frame_roi)
     print("Signal Extraction Complete")
 
-    # write the signals array to xlsx
-    print("\nWriting Signals to XLSX files...")
+    # write each roi's time series data to an xlsx file
+    print("\nWriting ROI Signals to XLSX files...")
     if 'duration' not in setup_config:
         setup_config['duration'] = input_video_stream.duration()
     if 'fps' not in setup_config:
@@ -78,17 +78,11 @@ def well_signals(setup_config: Dict):
     signal_to_xlsx_for_sdk(signal_values, time_stamps, setup_config)
     print("Writing Signals to XLSX Files Complete")
 
-    # zip all the xlsx into a single file
+    # zip all the xlsx files into a single archive
     print("\nCreating Zip Archive For XLSX files...")
     xlsx_archive_file_path = join_paths(setup_config['output_dir_path'], 'xlsx-results.zip')
     zip_files(input_dir_path=setup_config['xlsx_output_dir_path'], zip_file_path=xlsx_archive_file_path)
     print("Zip Archive For XLSX files Created")
-
-    # save an image with the roi's drawn on it as a validation check
-    print("\nCreating ROI Sanity Check Image...")
-    path_to_save_frame_image = join_paths(setup_config['output_dir_path'], 'roi_check.png')
-    frame_with_rois_drawn(frame_to_draw_rois_on, setup_config['wells'], path_to_save_frame_image)
-    print("ROI Sanity Check Image Created")
 
     # save an image with a plot of all well signals
     print("\nCreating Signal Plot Sanity Check Image...")
@@ -100,11 +94,11 @@ def well_signals(setup_config: Dict):
             setup_config['num_well_rows'] = well_grid_position['row']
         if well_grid_position['col'] > setup_config['num_well_cols']:
             setup_config['num_well_cols'] = well_grid_position['col']
-    # grid rows and columns are 0 indexed so,
-    # need to increment by 1 to get correct number
+    # grid rows and columns are 0 indexed so need to increment by 1 to get correct number
     setup_config['num_well_rows'] += 1
     setup_config['num_well_cols'] += 1
-    signals_to_plot(signal_values, time_stamps, setup_config)
+    plot_file_path = join_paths(setup_config['output_dir_path'], 'roi_signals_plots.png')
+    signals_to_plot(signal_values, time_stamps, setup_config, plot_file_path)
     print("Signal Plot Sanity Check Image Created")
 
     # clean up
@@ -112,8 +106,8 @@ def well_signals(setup_config: Dict):
     print()
 
 
-def signals_to_plot(signal_values: np.ndarray, time_stamps: np.ndarray, setup_config: Dict):
-    """ Create an image with plots of every wells signal """
+def signals_to_plot(signal_values: np.ndarray, time_stamps: np.ndarray, setup_config: Dict, plot_file_path: str):
+    """ Create an image with plots of time series data for multiple ROIs """
 
     fig, axes = plt.subplots(
         nrows=setup_config['num_well_rows'], ncols=setup_config['num_well_cols'],
@@ -121,9 +115,13 @@ def signals_to_plot(signal_values: np.ndarray, time_stamps: np.ndarray, setup_co
         dpi=300.0,
         layout='constrained'
     )
-    fig.suptitle(f"{setup_config['instrument_name']} - All Well Signals", fontsize=20)
-    fig.supylabel('roi average signal')
-    fig.supxlabel('time (s)')
+    instrument_name = setup_config['instrument_name']
+    recording_date = setup_config['recording_date']
+    video_file_name = basename(setup_config['input_path'])
+    plot_title = f"{instrument_name} Experiment Data - {recording_date} - {video_file_name}"
+    fig.suptitle(plot_title, fontsize=20)
+    fig.supylabel('ROI Average')
+    fig.supxlabel('Time (s)')
 
     for well_name, well_info in setup_config['wells'].items():
         serial_position = well_info['serial_position']
@@ -133,7 +131,6 @@ def signals_to_plot(signal_values: np.ndarray, time_stamps: np.ndarray, setup_co
         axes[plot_row, plot_col].plot(time_stamps, well_signal)
         axes[plot_row, plot_col].set_title(well_name)
 
-    plot_file_path = join_paths(setup_config['output_dir_path'], 'signals_plot.png')
     plt.savefig(plot_file_path)
 
 
@@ -147,7 +144,7 @@ def zip_files(input_dir_path: str, zip_file_path: str):
 
 
 def signal_to_xlsx_for_sdk(signal_values: np.ndarray, time_stamps: np.ndarray, setup_config: Dict):
-    """ writes the time series signal extracted from an MxN well nautilus to xlsx files """
+    """ writes time series data to xlsx files for multiple ROIs """
 
     num_wells, num_data_points = signal_values.shape
     frames_per_second = setup_config['fps']
@@ -186,7 +183,7 @@ def signal_to_xlsx_for_sdk(signal_values: np.ndarray, time_stamps: np.ndarray, s
 
 
 def frame_with_rois_drawn(frame_to_draw_on: np.ndarray, wells_info: Dict, path_to_save_frame_image: str):
-    """ draw the roi for each well on one frame image """
+    """ Draw multiple ROIs on one frame image """
     green_line_colour_bgr = (0, 255, 0)
     for _, well_info in wells_info.items():
         top_left = (
@@ -247,7 +244,7 @@ def well_roi_coordinates(well_info: Dict, roi_info: Dict, scale_factor: float) -
     }
 
 
-def config_with_well_roi_coordinates(setup_config: Dict) -> Dict:
+def add_roi_coordinates_to_well_info(setup_config: Dict) -> Dict:
     new_setup_config = setup_config.copy()
     scale_factor = new_setup_config['scale_factor']
     for _, well_info in new_setup_config['wells'].items():
