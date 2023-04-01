@@ -1,3 +1,5 @@
+import json
+import argparse
 import numpy as np
 import cv2 as cv
 import openpyxl
@@ -15,7 +17,7 @@ from video_api import VideoReader
 """
 
 
-def well_signals(setup_config: Dict):
+def well_data(setup_config: Dict):
     """
         Extracts time series data for defined roi's within each frame of a video and
         writes the results to xlsx files for each roi and zips them into a single archive.
@@ -266,3 +268,36 @@ def make_xlsx_output_dir(xlsx_output_dir_path: str):
 
 def roi_signal(roi_with_signal: np.ndarray) -> float:
     return np.mean(roi_with_signal)
+
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='Extracts signals from a multi-well microscope experiment')
+    parser.add_argument(
+        'json_config_path',
+        default=None,
+        help='Path to a json file with run config parameters'
+    )
+    parser.add_argument(
+        '--input_video_path',
+        default=None,
+        help='Path to a video with multi-well data',
+    )
+    parser.add_argument(
+        '--output_dir_path',
+        default=None,
+        help='Path to save all output',
+    )
+
+    args = parser.parse_args()
+
+    json_file = open(args.json_config_path)
+    setup_config = json.load(json_file)
+    if args.input_video_path is not None:
+        setup_config['input_path'] = args.input_video_path
+    if args.output_dir_path is not None:
+        setup_config['output_dir_path'] = args.output_dir_path
+
+    well_data(setup_config=setup_config)
+
+    json_file.close()
