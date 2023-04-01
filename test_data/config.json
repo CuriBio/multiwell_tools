@@ -1,6 +1,6 @@
 {
-    "input_path": "./test/MantarrayMiniPlate1Twitch.avi",
-    "recording_date": "01/01/2023",
+    "input_path": "./test_data/MantarrayMiniPlate1Twitch.avi",
+    "recording_date": "2023/01/01",
     "output_dir_path": "./out",
     "roi": {"dim": 2, "width": 90.0, "height": 30.0},
     "scale_factor": 4,

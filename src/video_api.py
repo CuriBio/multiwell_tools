@@ -4,7 +4,7 @@ from fractions import Fraction
 from av import open as OpenVideo
 from av import VideoFrame
 from nd2 import ND2File
-from src.image_utils import rgbConverter, rgbToGray, grayToRGB
+from image_utils import rgbConverter, rgbToGray, grayToRGB
 
 
 supported_file_extensions = ['.mp4', '.avi', '.mov', '.nd2']

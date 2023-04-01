@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from typing import Dict
 from os import makedirs, walk as dir_ls
 from os.path import isdir, basename, join as join_paths
-from src.video_api import VideoReader
+from video_api import VideoReader
 
 
 """
