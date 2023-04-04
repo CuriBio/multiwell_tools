@@ -150,7 +150,7 @@ def signal_to_xlsx_for_sdk(signal_values: np.ndarray, time_stamps: np.ndarray, s
 
     num_wells, num_data_points = signal_values.shape
     frames_per_second = setup_config['fps']
-    date_stamp = setup_config['recording_date'] + ' 00:00:00'
+    date_stamp = setup_config['recording_date']
     output_dir = setup_config['xlsx_output_dir_path']
 
     if 'barcode' in setup_config:
