@@ -35,21 +35,18 @@ def well_data(setup_config: Dict):
 
     # open the input stream
     print("\nOpening Video")
-    input_video_stream = VideoReader(setup_config['input_path'])
-    if not input_video_stream.isOpened():
-        raise RuntimeError("Can't open video stream. No Ca2+ signals have been extracted.")
 
     # save an image with the roi's drawn on it as quick sanity check.
     print("\nCreating ROI Sanity Check Image...")
-    input_video_stream.setFramePosition(0)
-    frame_to_draw_rois_on = input_video_stream.frameRGB()
+    frame_to_draw_rois_on = np.fromfile(file=setup_config['input_path'],dtype=np.uint8,count=int(1536*1024))
+    frame_to_draw_rois_on  = frame_to_draw_rois_on.reshape(int(1024),int(1536))
     path_to_save_frame_image = join_paths(setup_config['output_dir_path'], 'roi_locations.png')
     frame_with_rois_drawn(frame_to_draw_rois_on, setup_config['wells'], path_to_save_frame_image)
     print("ROI Sanity Check Image Created")
 
     # create a numpy array to store the time series of well signal values
     num_wells = num_active_wells(setup_config['wells'])
-    num_frames = input_video_stream.numFrames()
+    num_frames = 15000
     signal_values = np.empty((num_wells, num_frames), dtype=np.float32)
     x_starts = np.empty(num_wells, dtype=np.int64)
     y_starts = np.empty(num_wells, dtype=np.int64)
@@ -67,35 +64,22 @@ def well_data(setup_config: Dict):
                 y_starts[i] = int(well_info['roi_coordinates']['upper_left']['y_pos'])
                 y_stops[i] = int(well_info['roi_coordinates']['lower_right']['y_pos'])
                 i = i + 1
-    input_video_stream.initialiseStream()
-    while input_video_stream.next():
+ 
+    frame_num=0
+     while (frame_num < num_frames):
         #print(f"processing frame number: {input_video_stream.framePosition()} of {num_frames}")
-        #for well_name, well_info in setup_config['wells'].items():
-        #    if well_info['is_active']:
-        #        x_start = int(well_info['roi_coordinates']['upper_left']['x_pos'])
-        #        x_end = int(well_info['roi_coordinates']['lower_right']['x_pos'])
-        #        y_start = int(well_info['roi_coordinates']['upper_left']['y_pos'])
-        #        y_end = int(well_info['roi_coordinates']['lower_right']['y_pos'])
-        #        frame_roi = input_video_stream.frameGray()[y_start:y_end, x_start:x_end]
-        #        row_num = well_info['serial_position']
-        #        frame_num = input_video_stream.framePosition()
-        #        signal_values[row_num, frame_num] = roi_signal(frame_roi)
-        #        #signal_values[row_num, frame_num] = np.mean(input_video_stream.frameGray()[y_start:y_end, x_start:x_end])
-        frame_num = int(input_video_stream.framePosition())
-        #print(frame_num)
         i=0
+        currentFrame = np.fromfile(file=setup_config['input_path'],dtype=np.uint8,count=int(1536*1024),offset = int(frame_num*1536*1024))
+        currentFrame = currentFrame.reshape(int(1024),int(1536))
         while (i < num_wells):
             x_start = x_starts[i]
             x_end = x_stops[i]
             y_start = y_starts[i]
             y_end = y_stops[i]
-            #frame_roi = input_video_stream.frameGray()[y_start:y_end, x_start:x_end]
-            #row_num = well_info['serial_position']
-            #signal_values[row_num, frame_num] = roi_signal(frame_roi)
-            signal_values[i, frame_num] = np.mean(input_video_stream.frameGray()[y_start:y_end, x_start:x_end])
-            #print(i)
+            signal_values[i, frame_num] = np.mean(currentFrame[y_start:y_end, x_start:x_end])
             i=i+1
-            
+        frame_num = frame_num + 1
+        #print(frame_num)
     print("Signal Extraction Complete")
     StopTime = time()
     print(StopTime)
@@ -136,7 +120,7 @@ def well_data(setup_config: Dict):
     print("Signal Plot Sanity Check Image Created")
 
     # clean up
-    input_video_stream.close()
+    #input_video_stream.close()
     print()
 
 

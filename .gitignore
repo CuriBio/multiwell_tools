@@ -131,3 +131,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+test_data/Cook2DCoCulture20230404default_2023_04_04_205036.avi
+test_data/default__stack_2023_04_05_005849.avi
+test_data/PBS2023_04_05_004446-1.raw
+test_data/PBS2023_04_05_004446.avi
+test_data/PBS2023_04_05_004446.raw
+test_data/PBS2023_04_05_004446jpg.avi
