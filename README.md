@@ -7,7 +7,7 @@ args with a leading -- are optional and if supplied will override keys with the 
 
 ### Basic System Test ###
 To run a basic system test, if you are in the main directory (multiwell_tools) :</br></br>
-` > python ./src/well_data.py ./test_data/config.json/ --input_video_path ./test_data/MantarrayMiniPlate1Twitch.avi`</br></br>
+` > python ./src/well_data.py ./test_data/config.json --input_video_path ./test_data/MantarrayMiniPlate1Twitch.avi`</br></br>
 This will run the well data extraction function which will produce:
 * xlsx files with the time series data from each well,
 * a zip archive of all the xlsx files,
