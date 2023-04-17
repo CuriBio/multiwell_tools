@@ -1,12 +1,16 @@
 {
-  "input_path": "./test_data/PBS2023_04_05_004446jpg.avi",
+  "input_path": "./test_data/PBS2023_04_05_004446.raw",
   "recording_date": "2022-01-13 00:00:00",
-  "output_dir_path": "./out/PBS2023_04_05_004446jpg.avi",
+  "output_dir_path": "./out/PBS2023_04_05_004446.raw",
   "roi": {
     "dim": 2,
-    "width": 90.0,
-    "height": 30.0
+    "width": 128,
+    "height": 128
   },
+  "num_horizontal_pixels": 1536,
+  "num_vertical_pixels": 1024,
+  "num_frames": 15000,
+  "bit_depth":  16,
   "scale_factor": 1,
   "duration": 60,
   "fps": 250,

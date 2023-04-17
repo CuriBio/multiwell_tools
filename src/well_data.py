@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 from typing import Dict
 from os import makedirs, walk as dir_ls
 from os.path import isdir, basename, join as join_paths
-from video_api import VideoReader
 
 
 """
@@ -28,6 +27,22 @@ def well_data(setup_config: Dict):
 
     # add the roi_coordinates to the well information
     setup_config = add_roi_coordinates_to_well_info(setup_config)
+    # read image parameters
+    num_horizontal_pixels = int(setup_config['num_horizontal_pixels'])
+    num_vertical_pixels = int(setup_config['num_vertical_pixels'])
+    num_frames = int(setup_config['num_frames'])
+    bit_depth = int(setup_config['bit_depth'])
+    if(bit_depth == 8):
+        pixel_np_data_type = np.uint8
+        pixel_size = 1
+    elif (bit_depth == 16):
+        pixel_np_data_type = np.uint16
+        pixel_size = 2
+    else:
+        #THIS CONDITION SHOULD THROW AN ERROR RATHER THAN JUST PRINT TO STANDARD OUTPUT
+        print(f"Error: {bit_depth} bit images are not supported")
+        return(1)
+    #Check to see if the file size is correct based on the values of num_horizontal_pixels, num_vertical_pixels, num_frames, pixel_size, i.e. the file size should be num_horizontal_pixels*num_vertical_pixels*num_frames*pixel_size bytes
 
     # safely create the output dir if it does not exist
     print("\nCreating Output Dir")
@@ -35,21 +50,17 @@ def well_data(setup_config: Dict):
 
     # open the input stream
     print("\nOpening Video")
-    input_video_stream = VideoReader(setup_config['input_path'])
-    if not input_video_stream.isOpened():
-        raise RuntimeError("Can't open video stream. No Ca2+ signals have been extracted.")
 
     # save an image with the roi's drawn on it as quick sanity check.
     print("\nCreating ROI Sanity Check Image...")
-    input_video_stream.setFramePosition(0)
-    frame_to_draw_rois_on = input_video_stream.frameRGB()
+    frame_to_draw_rois_on = np.fromfile(file=setup_config['input_path'],dtype=pixel_np_data_type,count=(num_horizontal_pixels*num_vertical_pixels ))
+    frame_to_draw_rois_on  = frame_to_draw_rois_on.reshape(num_vertical_pixels ,num_horizontal_pixels)
     path_to_save_frame_image = join_paths(setup_config['output_dir_path'], 'roi_locations.png')
     frame_with_rois_drawn(frame_to_draw_rois_on, setup_config['wells'], path_to_save_frame_image)
     print("ROI Sanity Check Image Created")
 
     # create a numpy array to store the time series of well signal values
     num_wells = num_active_wells(setup_config['wells'])
-    num_frames = input_video_stream.numFrames()
     signal_values = np.empty((num_wells, num_frames), dtype=np.float32)
     x_starts = np.empty(num_wells, dtype=np.int64)
     y_starts = np.empty(num_wells, dtype=np.int64)
@@ -67,45 +78,32 @@ def well_data(setup_config: Dict):
                 y_starts[i] = int(well_info['roi_coordinates']['upper_left']['y_pos'])
                 y_stops[i] = int(well_info['roi_coordinates']['lower_right']['y_pos'])
                 i = i + 1
-    input_video_stream.initialiseStream()
-    while input_video_stream.next():
+ 
+    frame_num=0
+    while (frame_num < num_frames):
         #print(f"processing frame number: {input_video_stream.framePosition()} of {num_frames}")
-        #for well_name, well_info in setup_config['wells'].items():
-        #    if well_info['is_active']:
-        #        x_start = int(well_info['roi_coordinates']['upper_left']['x_pos'])
-        #        x_end = int(well_info['roi_coordinates']['lower_right']['x_pos'])
-        #        y_start = int(well_info['roi_coordinates']['upper_left']['y_pos'])
-        #        y_end = int(well_info['roi_coordinates']['lower_right']['y_pos'])
-        #        frame_roi = input_video_stream.frameGray()[y_start:y_end, x_start:x_end]
-        #        row_num = well_info['serial_position']
-        #        frame_num = input_video_stream.framePosition()
-        #        signal_values[row_num, frame_num] = roi_signal(frame_roi)
-        #        #signal_values[row_num, frame_num] = np.mean(input_video_stream.frameGray()[y_start:y_end, x_start:x_end])
-        frame_num = int(input_video_stream.framePosition())
-        #print(frame_num)
         i=0
+        currentFrame = np.fromfile(file=setup_config['input_path'],dtype=pixel_np_data_type ,count=int(num_horizontal_pixels*num_vertical_pixels ),offset = int(frame_num*num_horizontal_pixels*num_vertical_pixels*pixel_size))
+        currentFrame = currentFrame.reshape(num_vertical_pixels ,num_horizontal_pixels)
         while (i < num_wells):
             x_start = x_starts[i]
             x_end = x_stops[i]
             y_start = y_starts[i]
             y_end = y_stops[i]
-            #frame_roi = input_video_stream.frameGray()[y_start:y_end, x_start:x_end]
-            #row_num = well_info['serial_position']
-            #signal_values[row_num, frame_num] = roi_signal(frame_roi)
-            signal_values[i, frame_num] = np.mean(input_video_stream.frameGray()[y_start:y_end, x_start:x_end])
-            #print(i)
+            signal_values[i, frame_num] = np.mean(currentFrame[y_start:y_end, x_start:x_end])
             i=i+1
-            
+        frame_num = frame_num + 1
+        #print(frame_num)
     print("Signal Extraction Complete")
     StopTime = time()
     print(StopTime)
     print((StopTime - StartTime))
     # write each roi's time series data to an xlsx file
     print("\nWriting ROI Signals to XLSX files...")
-    if 'duration' not in setup_config:
-        setup_config['duration'] = input_video_stream.duration()
-    if 'fps' not in setup_config:
-        setup_config['fps'] = input_video_stream.framesPerSecond()
+    #if 'duration' not in setup_config:
+    #    setup_config['duration'] = input_video_stream.duration()
+    #if 'fps' not in setup_config:
+    #    setup_config['fps'] = input_video_stream.framesPerSecond()
     time_stamps = np.linspace(start=0, stop=setup_config['duration'], num=num_frames)
     setup_config['xlsx_output_dir_path'] = join_paths(setup_config['output_dir_path'], 'xlsx')
     make_xlsx_output_dir(xlsx_output_dir_path=setup_config['xlsx_output_dir_path'])
@@ -136,7 +134,7 @@ def well_data(setup_config: Dict):
     print("Signal Plot Sanity Check Image Created")
 
     # clean up
-    input_video_stream.close()
+    #input_video_stream.close()
     print()
 
 
@@ -310,25 +308,25 @@ if __name__ == '__main__':
         default=None,
         help='Path to a json file with run config parameters'
     )
-    parser.add_argument(
-        '--input_video_path',
-        default=None,
-        help='Path to a video with multi-well data',
-    )
-    parser.add_argument(
-        '--output_dir_path',
-        default=None,
-        help='Path to save all output',
-    )
+    #parser.add_argument(
+    #    '--input_video_path',
+    #    default=None,
+    #    help='Path to a video with multi-well data',
+    #)
+    #parser.add_argument(
+    #    '--output_dir_path',
+    #    default=None,
+    #    help='Path to save all output',
+    #)
 
     args = parser.parse_args()
 
     json_file = open(args.json_config_path)
     setup_config = json.load(json_file)
-    if args.input_video_path is not None:
-        setup_config['input_path'] = args.input_video_path
-    if args.output_dir_path is not None:
-        setup_config['output_dir_path'] = args.output_dir_path
+    #if args.input_video_path is not None:
+    #    setup_config['input_path'] = args.input_video_path
+    #if args.output_dir_path is not None:
+    #    setup_config['output_dir_path'] = args.output_dir_path
 
     well_data(setup_config=setup_config)
 
