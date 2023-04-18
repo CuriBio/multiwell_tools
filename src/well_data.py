@@ -154,15 +154,18 @@ def signals_to_plot(signal_values: np.ndarray, time_stamps: np.ndarray, setup_co
     fig.suptitle(plot_title, fontsize=20)
     fig.supylabel('ROI Average')
     fig.supxlabel('Time (s)')
-
+    i=0
     for well_name, well_info in setup_config['wells'].items():
-        serial_position = well_info['serial_position']
+        if not (well_info['is_active']):
+            continue
+        #serial_position = well_info['serial_position']
+        serial_position = i
         well_signal = signal_values[serial_position, :]
         plot_row = well_info['grid_position']['row']
         plot_col = well_info['grid_position']['col']
         axes[plot_row, plot_col].plot(time_stamps, well_signal)
         axes[plot_row, plot_col].set_title(well_name)
-
+        i=i+1
     plt.savefig(plot_file_path)
 
 
@@ -187,8 +190,11 @@ def signal_to_xlsx_for_sdk(signal_values: np.ndarray, time_stamps: np.ndarray, s
         well_plate_barcode = setup_config['barcode']
     else:
         well_plate_barcode = 'NA'
-
+    i = 0
     for well_name, well_info in setup_config['wells'].items():
+        if not (well_info['is_active']):
+            continue
+        print((well_info['is_active']))
         workbook = openpyxl.Workbook()
         sheet = workbook.active
 
@@ -204,7 +210,8 @@ def signal_to_xlsx_for_sdk(signal_values: np.ndarray, time_stamps: np.ndarray, s
         template_start_row = 2
         time_column = 'A'
         signal_column = 'B'
-        well_data_row = well_info['serial_position']
+        #well_data_row = well_info['serial_position']
+        well_data_row = i
         for data_point_position in range(num_data_points):
             sheet_row = str(data_point_position + template_start_row)
             sheet[time_column + sheet_row] = time_stamps[data_point_position]
@@ -212,7 +219,7 @@ def signal_to_xlsx_for_sdk(signal_values: np.ndarray, time_stamps: np.ndarray, s
         path_to_output_file = join_paths(output_dir, well_name + '.xlsx')
         workbook.save(filename=path_to_output_file)
         workbook.close()
-
+        i = i+1
 
 def frame_with_rois_drawn(frame_to_draw_on: np.ndarray, wells_info: Dict, path_to_save_frame_image: str):
     """ Draw multiple ROIs on one frame image """

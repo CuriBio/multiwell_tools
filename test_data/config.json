@@ -10,7 +10,7 @@
   "num_horizontal_pixels": 1536,
   "num_vertical_pixels": 1024,
   "num_frames": 15000,
-  "bit_depth":  16,
+  "bit_depth":  8,
   "scale_factor": 1,
   "duration": 60,
   "fps": 250,
@@ -26,7 +26,7 @@
         "x_pos": 146.25,
         "y_pos": 129.25
       },
-      "is_active": true
+      "is_active": false
     },
     "A2": {
       "serial_position": 1,
