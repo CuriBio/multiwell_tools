@@ -1,309 +1,155 @@
 {
-  "input_path": "./test_data/PBS2023_04_05_004446.raw",
-  "recording_date": "2022-01-13 00:00:00",
-  "output_dir_path": "./out/PBS2023_04_05_004446.raw",
-  "roi": {
-    "dim": 2,
-    "width": 128,
-    "height": 128
-  },
-  "num_horizontal_pixels": 1536,
-  "num_vertical_pixels": 1024,
-  "num_frames": 15000,
-  "bit_depth":  8,
-  "scale_factor": 1,
-  "duration": 60,
-  "fps": 250,
-  "instrument_name": "Nautilus",
-  "wells": {
-    "A1": {
-      "serial_position": 0,
-      "grid_position": {
-        "row": 0,
-        "col": 0
-      },
-      "center_coordinates": {
-        "x_pos": 146.25,
-        "y_pos": 129.25
-      },
-      "is_active": false
-    },
-    "A2": {
-      "serial_position": 1,
-      "grid_position": {
-        "row": 0,
-        "col": 1
-      },
-      "center_coordinates": {
-        "x_pos": 392.5,
-        "y_pos": 130.5
-      },
-      "is_active": true
-    },
-    "A3": {
-      "serial_position": 2,
-      "grid_position": {
-        "row": 0,
-        "col": 2
-      },
-      "center_coordinates": {
-        "x_pos": 660.5,
-        "y_pos": 129.75
-      },
-      "is_active": true
-    },
-    "A4": {
-      "serial_position": 3,
-      "grid_position": {
-        "row": 0,
-        "col": 3
-      },
-      "center_coordinates": {
-        "x_pos": 905.75,
-        "y_pos": 130.5
-      },
-      "is_active": true
-    },
-    "A5": {
-      "serial_position": 4,
-      "grid_position": {
-        "row": 0,
-        "col": 4
-      },
-      "center_coordinates": {
-        "x_pos": 1185.25,
-        "y_pos": 129.75
-      },
-      "is_active": true
-    },
-    "A6": {
-      "serial_position": 5,
-      "grid_position": {
-        "row": 0,
-        "col": 5
-      },
-      "center_coordinates": {
-        "x_pos": 1430.5,
-        "y_pos": 130.25
-      },
-      "is_active": true
-    },
-    "B1": {
-      "serial_position": 6,
-      "grid_position": {
-        "row": 1,
-        "col": 0
-      },
-      "center_coordinates": {
-        "x_pos": 147.25,
-        "y_pos": 374
-      },
-      "is_active": true
-    },
-    "B2": {
-      "serial_position": 7,
-      "grid_position": {
-        "row": 1,
-        "col": 1
-      },
-      "center_coordinates": {
-        "x_pos": 391.75,
-        "y_pos": 374.5
-      },
-      "is_active": true
-    },
-    "B3": {
-      "serial_position": 8,
-      "grid_position": {
-        "row": 1,
-        "col": 2
-      },
-      "center_coordinates": {
-        "x_pos": 660.5,
-        "y_pos": 372.75
-      },
-      "is_active": true
-    },
-    "B4": {
-      "serial_position": 9,
-      "grid_position": {
-        "row": 1,
-        "col": 3
-      },
-      "center_coordinates": {
-        "x_pos": 904.5,
-        "y_pos": 374
-      },
-      "is_active": true
-    },
-    "B5": {
-      "serial_position": 10,
-      "grid_position": {
-        "row": 1,
-        "col": 4
-      },
-      "center_coordinates": {
-        "x_pos": 1185,
-        "y_pos": 373.75
-      },
-      "is_active": true
-    },
-    "B6": {
-      "serial_position": 11,
-      "grid_position": {
-        "row": 1,
-        "col": 5
-      },
-      "center_coordinates": {
-        "x_pos": 1429.5,
-        "y_pos": 374.75
-      },
-      "is_active": true
-    },
-    "C1": {
-      "serial_position": 12,
-      "grid_position": {
-        "row": 2,
-        "col": 0
-      },
-      "center_coordinates": {
-        "x_pos": 148,
-        "y_pos": 643
-      },
-      "is_active": true
-    },
-    "C2": {
-      "serial_position": 13,
-      "grid_position": {
-        "row": 2,
-        "col": 1
-      },
-      "center_coordinates": {
-        "x_pos": 392,
-        "y_pos": 643.25
-      },
-      "is_active": true
-    },
-    "C3": {
-      "serial_position": 14,
-      "grid_position": {
-        "row": 2,
-        "col": 2
-      },
-      "center_coordinates": {
-        "x_pos": 660.5,
-        "y_pos": 642
-      },
-      "is_active": true
-    },
-    "C4": {
-      "serial_position": 15,
-      "grid_position": {
-        "row": 2,
-        "col": 3
-      },
-      "center_coordinates": {
-        "x_pos": 904.75,
-        "y_pos": 642.5
-      },
-      "is_active": true
-    },
-    "C5": {
-      "serial_position": 16,
-      "grid_position": {
-        "row": 2,
-        "col": 4
-      },
-      "center_coordinates": {
-        "x_pos": 1185.5,
-        "y_pos": 642.25
-      },
-      "is_active": true
-    },
-    "C6": {
-      "serial_position": 17,
-      "grid_position": {
-        "row": 2,
-        "col": 5
-      },
-      "center_coordinates": {
-        "x_pos": 1429.5,
-        "y_pos": 642.25
-      },
-      "is_active": true
-    },
-    "D1": {
-      "serial_position": 18,
-      "grid_position": {
-        "row": 3,
-        "col": 0
-      },
-      "center_coordinates": {
-        "x_pos": 147.25,
-        "y_pos": 887.25
-      },
-      "is_active": true
-    },
-    "D2": {
-      "serial_position": 19,
-      "grid_position": {
-        "row": 3,
-        "col": 1
-      },
-      "center_coordinates": {
-        "x_pos": 392.25,
-        "y_pos": 887
-      },
-      "is_active": true
-    },
-    "D3": {
-      "serial_position": 20,
-      "grid_position": {
-        "row": 3,
-        "col": 2
-      },
-      "center_coordinates": {
-        "x_pos": 659.25,
-        "y_pos": 886
-      },
-      "is_active": true
-    },
-    "D4": {
-      "serial_position": 21,
-      "grid_position": {
-        "row": 3,
-        "col": 3
-      },
-      "center_coordinates": {
-        "x_pos": 904.5,
-        "y_pos": 886
-      },
-      "is_active": true
-    },
-    "D5": {
-      "serial_position": 22,
-      "grid_position": {
-        "row": 3,
-        "col": 4
-      },
-      "center_coordinates": {
-        "x_pos": 1184.25,
-        "y_pos": 885.75
-      },
-      "is_active": true
-    },
-    "D6": {
-      "serial_position": 23,
-      "grid_position": {
-        "row": 3,
-        "col": 5
-      },
-      "center_coordinates": {
-        "x_pos": 1430.25,
-        "y_pos": 886.75
-      },
-      "is_active": true
-    }
+    "input_path": "./test_data/MantarrayMiniPlate1Twitch.avi",
+    "recording_date": "2022-01-13 00:00:00",
+    "output_dir_path": "./out",
+    "roi": {"dim": 2, "width": 90.0, "height": 30.0},
+    "scale_factor": 4,
+    "instrument_name": "Nautilus",
+    "wells": {
+        "A1": {
+            "serial_position": 0,
+            "grid_position": {"row": 0, "col": 0},
+            "center_coordinates": {"x_pos": 146.25, "y_pos": 129.25},
+            "is_active": false
+        },
+        "A2": {
+            "serial_position": 1,
+            "grid_position": {"row": 0, "col": 1},
+            "center_coordinates": {"x_pos": 392.5, "y_pos": 130.5},
+            "is_active": true
+        },
+        "A3": {
+            "serial_position": 2,
+            "grid_position": {"row": 0, "col": 2},
+            "center_coordinates": {"x_pos": 660.5, "y_pos": 129.75},
+            "is_active": true
+        },
+        "A4": {
+            "serial_position": 3,
+            "grid_position": {"row": 0, "col": 3},
+            "center_coordinates": {"x_pos": 905.75, "y_pos": 130.5},
+            "is_active": true
+        },
+        "A5": {
+            "serial_position": 4,
+            "grid_position": {"row": 0, "col": 4},
+            "center_coordinates": {"x_pos": 1185.25, "y_pos": 129.75},
+            "is_active": true
+        },
+        "A6": {
+            "serial_position": 5,
+            "grid_position": {"row": 0, "col": 5},
+            "center_coordinates": {"x_pos": 1430.5, "y_pos": 130.25},
+            "is_active": true
+        },
+        "B1": {
+            "serial_position": 6,
+            "grid_position": {"row": 1, "col": 0},
+            "center_coordinates": {"x_pos": 147.25, "y_pos": 374},
+            "is_active": true
+        },
+        "B2": {
+            "serial_position": 7,
+            "grid_position": {"row": 1, "col": 1},
+            "center_coordinates": {"x_pos": 391.75, "y_pos": 374.5},
+            "is_active": true
+        },
+        "B3": {
+            "serial_position": 8,
+            "grid_position": {"row": 1, "col": 2},
+            "center_coordinates": {"x_pos": 660.5, "y_pos": 372.75},
+            "is_active": true
+        },
+        "B4": {
+            "serial_position": 9,
+            "grid_position": {"row": 1, "col": 3},
+            "center_coordinates": {"x_pos": 904.5, "y_pos": 374},
+            "is_active": true
+        },
+        "B5": {
+            "serial_position": 10,
+            "grid_position": {"row": 1, "col": 4},
+            "center_coordinates": {"x_pos": 1185, "y_pos": 373.75},
+            "is_active": true
+        },
+        "B6": {
+            "serial_position": 11,
+            "grid_position": {"row": 1, "col": 5},
+            "center_coordinates": {"x_pos": 1429.5, "y_pos": 374.75},
+            "is_active": true
+        },
+        "C1": {
+            "serial_position": 12,
+            "grid_position": {"row": 2, "col": 0},
+            "center_coordinates": {"x_pos": 148, "y_pos": 643},
+            "is_active": true
+        },
+        "C2": {
+            "serial_position": 13,
+            "grid_position": {"row": 2, "col": 1},
+            "center_coordinates": {"x_pos": 392, "y_pos": 643.25},
+            "is_active": true
+        },
+        "C3": {
+            "serial_position": 14,
+            "grid_position": {"row": 2, "col": 2},
+            "center_coordinates": {"x_pos": 660.5, "y_pos": 642},
+            "is_active": true
+        },
+        "C4": {
+            "serial_position": 15,
+            "grid_position": {"row": 2, "col": 3},
+            "center_coordinates": {"x_pos": 904.75, "y_pos": 642.5},
+            "is_active": true
+        },
+        "C5": {
+            "serial_position": 16,
+            "grid_position": {"row": 2, "col": 4},
+            "center_coordinates": {"x_pos": 1185.5, "y_pos": 642.25},
+            "is_active": true
+        },
+        "C6": {
+            "serial_position": 17,
+            "grid_position": {"row": 2, "col": 5},
+            "center_coordinates": {"x_pos": 1429.5, "y_pos": 642.25},
+            "is_active": true
+        },
+        "D1": {
+            "serial_position": 18,
+            "grid_position": {"row": 3, "col": 0},
+            "center_coordinates": {"x_pos": 147.25, "y_pos": 887.25},
+            "is_active": true
+        },
+        "D2": {
+            "serial_position": 19,
+            "grid_position": {"row": 3, "col": 1},
+            "center_coordinates": {"x_pos": 392.25, "y_pos": 887},
+            "is_active": true
+        },
+        "D3": {
+            "serial_position": 20,
+            "grid_position": {"row": 3, "col": 2},
+            "center_coordinates": {"x_pos": 659.25, "y_pos": 886},
+            "is_active": true
+        },
+        "D4": {
+            "serial_position": 21,
+            "grid_position": {"row": 3, "col": 3},
+            "center_coordinates": {"x_pos": 904.5, "y_pos": 886},
+            "is_active": true
+        },
+        "D5": {
+            "serial_position": 22,
+            "grid_position": {"row": 3, "col": 4},
+            "center_coordinates": {"x_pos": 1184.25, "y_pos": 885.75},
+            "is_active": true
+        },
+        "D6": {
+            "serial_position": 23,
+            "grid_position": {"row": 3, "col": 5},
+            "center_coordinates": {"x_pos": 1430.25, "y_pos": 886.75},
+            "is_active": true
+        }
 
-  }
+    }
 }
