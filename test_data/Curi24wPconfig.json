@@ -1,19 +1,19 @@
 {
-  "input_path": "./test_data/PBS2023_04_05_004446.raw",
+  "input_path": "",
   "recording_date": "2022-01-13 00:00:00",
-  "output_dir_path": "./out/PBS2023_04_05_004446.raw",
+  "output_dir_path": "",
   "roi": {
     "dim": 2,
     "width": 128,
     "height": 128
   },
-  "num_horizontal_pixels": 1536,
-  "num_vertical_pixels": 1024,
-  "num_frames": 15000,
-  "bit_depth":  8,
-  "scale_factor": 1,
-  "duration": 60,
-  "fps": 250,
+  "num_horizontal_pixels": 0,
+  "num_vertical_pixels": 0,
+  "num_frames": 0,
+  "bit_depth":  0,
+  "scale_factor": 0,
+  "duration": 0,
+  "fps": 0,
   "instrument_name": "Nautilus",
   "wells": {
     "A1": {
@@ -23,8 +23,8 @@
         "col": 0
       },
       "center_coordinates": {
-        "x_pos": 146.25,
-        "y_pos": 129.25
+        "x_pos": 284.0,
+        "y_pos": 275.0
       },
       "is_active": false
     },
@@ -35,8 +35,8 @@
         "col": 1
       },
       "center_coordinates": {
-        "x_pos": 392.5,
-        "y_pos": 130.5
+        "x_pos": 748.0,
+        "y_pos": 279.0
       },
       "is_active": true
     },
@@ -47,8 +47,8 @@
         "col": 2
       },
       "center_coordinates": {
-        "x_pos": 660.5,
-        "y_pos": 129.75
+        "x_pos": 1308.0,
+        "y_pos": 281.0
       },
       "is_active": true
     },
@@ -59,8 +59,8 @@
         "col": 3
       },
       "center_coordinates": {
-        "x_pos": 905.75,
-        "y_pos": 130.5
+        "x_pos": 1770.0,
+        "y_pos": 285.0
       },
       "is_active": true
     },
@@ -71,8 +71,8 @@
         "col": 4
       },
       "center_coordinates": {
-        "x_pos": 1185.25,
-        "y_pos": 129.75
+        "x_pos": 2326.0,
+        "y_pos": 275.0
       },
       "is_active": true
     },
@@ -83,8 +83,8 @@
         "col": 5
       },
       "center_coordinates": {
-        "x_pos": 1430.5,
-        "y_pos": 130.25
+        "x_pos": 2792.0,
+        "y_pos": 279.0
       },
       "is_active": true
     },
@@ -95,8 +95,8 @@
         "col": 0
       },
       "center_coordinates": {
-        "x_pos": 147.25,
-        "y_pos": 374
+        "x_pos": 279.0,
+        "y_pos": 739.0
       },
       "is_active": true
     },
@@ -107,8 +107,8 @@
         "col": 1
       },
       "center_coordinates": {
-        "x_pos": 391.75,
-        "y_pos": 374.5
+        "x_pos": 744.0,
+        "y_pos": 743.0
       },
       "is_active": true
     },
@@ -119,8 +119,8 @@
         "col": 2
       },
       "center_coordinates": {
-        "x_pos": 660.5,
-        "y_pos": 372.75
+        "x_pos": 1305.0,
+        "y_pos": 744.0
       },
       "is_active": true
     },
@@ -131,8 +131,8 @@
         "col": 3
       },
       "center_coordinates": {
-        "x_pos": 904.5,
-        "y_pos": 374
+        "x_pos": 1768.0,
+        "y_pos": 749.0
       },
       "is_active": true
     },
@@ -143,8 +143,8 @@
         "col": 4
       },
       "center_coordinates": {
-        "x_pos": 1185,
-        "y_pos": 373.75
+        "x_pos": 2324.0,
+        "y_pos": 740.0
       },
       "is_active": true
     },
@@ -155,8 +155,8 @@
         "col": 5
       },
       "center_coordinates": {
-        "x_pos": 1429.5,
-        "y_pos": 374.75
+        "x_pos": 2788.0,
+        "y_pos": 743
       },
       "is_active": true
     },
@@ -167,8 +167,8 @@
         "col": 0
       },
       "center_coordinates": {
-        "x_pos": 148,
-        "y_pos": 643
+        "x_pos": 280.0,
+        "y_pos": 1301.0
       },
       "is_active": true
     },
@@ -179,8 +179,8 @@
         "col": 1
       },
       "center_coordinates": {
-        "x_pos": 392,
-        "y_pos": 643.25
+        "x_pos": 742.0,
+        "y_pos": 1303
       },
       "is_active": true
     },
@@ -191,8 +191,8 @@
         "col": 2
       },
       "center_coordinates": {
-        "x_pos": 660.5,
-        "y_pos": 642
+        "x_pos": 1304.0,
+        "y_pos": 1302.0
       },
       "is_active": true
     },
@@ -203,8 +203,8 @@
         "col": 3
       },
       "center_coordinates": {
-        "x_pos": 904.75,
-        "y_pos": 642.5
+        "x_pos": 1767.0,
+        "y_pos": 1304.0
       },
       "is_active": true
     },
@@ -215,8 +215,8 @@
         "col": 4
       },
       "center_coordinates": {
-        "x_pos": 1185.5,
-        "y_pos": 642.25
+        "x_pos": 2327.0,
+        "y_pos": 1302.0
       },
       "is_active": true
     },
@@ -227,8 +227,8 @@
         "col": 5
       },
       "center_coordinates": {
-        "x_pos": 1429.5,
-        "y_pos": 642.25
+        "x_pos": 2791.0,
+        "y_pos": 1306.0
       },
       "is_active": true
     },
@@ -239,8 +239,8 @@
         "col": 0
       },
       "center_coordinates": {
-        "x_pos": 147.25,
-        "y_pos": 887.25
+        "x_pos": 275.0,
+        "y_pos": 1763.0
       },
       "is_active": true
     },
@@ -251,8 +251,8 @@
         "col": 1
       },
       "center_coordinates": {
-        "x_pos": 392.25,
-        "y_pos": 887
+        "x_pos": 740.0,
+        "y_pos": 1767.0
       },
       "is_active": true
     },
@@ -263,8 +263,8 @@
         "col": 2
       },
       "center_coordinates": {
-        "x_pos": 659.25,
-        "y_pos": 886
+        "x_pos": 1299.0,
+        "y_pos": 1766.0
       },
       "is_active": true
     },
@@ -275,8 +275,8 @@
         "col": 3
       },
       "center_coordinates": {
-        "x_pos": 904.5,
-        "y_pos": 886
+        "x_pos": 1764.0,
+        "y_pos": 1767.0
       },
       "is_active": true
     },
@@ -287,8 +287,8 @@
         "col": 4
       },
       "center_coordinates": {
-        "x_pos": 1184.25,
-        "y_pos": 885.75
+        "x_pos": 2324.0,
+        "y_pos": 1764.0
       },
       "is_active": true
     },
@@ -299,8 +299,8 @@
         "col": 5
       },
       "center_coordinates": {
-        "x_pos": 1430.25,
-        "y_pos": 886.75
+        "x_pos": 2788.0,
+        "y_pos": 1769.0
       },
       "is_active": true
     }
