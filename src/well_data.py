@@ -36,7 +36,7 @@ def well_data(setup_config: Dict):
         pixel_np_data_type = np.uint8
         pixel_size = 1
     elif (bit_depth == 16):
-        pixel_np_data_type = np.dtype('>u2')
+        pixel_np_data_type = np.dtype('<u2')
         pixel_size = 2
         print(pixel_np_data_type)
     else:
